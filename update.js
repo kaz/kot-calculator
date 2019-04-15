@@ -23,7 +23,8 @@ const clocks = [
 ];
 
 (async () => {
-	const browser = await puppeteer.launch();
+	const browser = await puppeteer.launch({args: ["--no-sandbox"]});
+
 	const page = await browser.newPage();
 	await page.goto("https://s3.kingtime.jp/admin/");
 	await page.type("#login_id", "DUMMY_ID");
