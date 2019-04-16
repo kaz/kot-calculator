@@ -42,12 +42,12 @@ const clocks = [
 		});
 		diff = Math.round(diff * 100) / 100;
 
-		const $records = $(".htBlock-adjastableTableF td.start_end_timerecord");
-		let hour, minute, count = $records.size();
-		$records.each((_, elm) => {
+		let hour, minute, count = 0;
+		$(".htBlock-adjastableTableF td.start_end_timerecord").each((_, elm) => {
 			const match = $(elm).text().match(/(\d\d):(\d\d)/);
 			if(match){
 				[_, hour, minute] = match;
+				count++;
 			}
 		});
 		hour = parseInt(hour);
