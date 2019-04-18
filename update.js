@@ -32,7 +32,7 @@ const clocks = [
 	await page.click("#login_button");
 	await page.waitForSelector("#footer_main_menu");
 
-	const {diff, hour, minute, count} = await page.evaluate(() => {
+	let {diff, hour, minute, count} = await page.evaluate(() => {
 		let diff = 0;
 		$(".htBlock-adjastableTableF td.all_work_time").each((_, elm) => {
 			const val = parseFloat($(elm).text());
@@ -40,7 +40,6 @@ const clocks = [
 				diff += val - 8.0;
 			}
 		});
-		diff = Math.round(diff * 100) / 100;
 
 		let hour, minute, count = 0;
 		$(".htBlock-adjastableTableF td.start_end_timerecord").each((_, elm) => {
@@ -50,14 +49,20 @@ const clocks = [
 				count++;
 			}
 		});
-		hour = parseInt(hour);
-		minute = parseInt(minute);
 
 		return {diff, hour, minute, count};
 	});
-
 	await browser.close();
 
-	const name = `${states[count % 2]}${clocks[hour % 12][Math.floor(minute / 30)]} ${diff == 0 ? "±" : (diff > 0 ? "+" : "-")}${diff}h`;
+	hour = parseInt(hour);
+	minute = parseInt(minute);
+
+	if(count % 2){
+		const now = new Date();
+		diff = diff - 9.0 + (now.getHours() - hour) + (now.getMinutes() - minute) / 60;
+	}
+	diff = Math.round(diff * 100) / 100;
+
+	const name = `${clocks[hour % 12][Math.floor(minute / 30)]}${states[count % 2]} ${diff == 0 ? "±" : (diff > 0 ? "+" : "")}${diff}h`;
 	await client.postAsync("account/update_profile", {name});
 })();
