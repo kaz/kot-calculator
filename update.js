@@ -8,18 +8,8 @@ const client = Promise.promisifyAll(new Twitter(require("./auth.json")));
 
 const states = ["🏠", "👨🏻‍💻"];
 const clocks = [
-	["🕛", "🕧"],
-	["🕐", "🕜"],
-	["🕑", "🕝"],
-	["🕒", "🕞"],
-	["🕓", "🕟"],
-	["🕔", "🕠"],
-	["🕕", "🕡"],
-	["🕖", "🕢"],
-	["🕗", "🕣"],
-	["🕘", "🕤"],
-	["🕙", "🕥"],
-	["🕚", "🕦"],
+	["🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚"],
+	["🕧", "🕜", "🕝", "🕞", "🕟", "🕠", "🕡", "🕢", "🕣", "🕤", "🕥", "🕦"],
 ];
 
 (async () => {
@@ -63,6 +53,6 @@ const clocks = [
 	}
 	diff = Math.round(diff * 100) / 100;
 
-	const name = `${clocks[hour % 12][Math.floor(minute / 30)]}${states[count % 2]} ${diff == 0 ? "±" : (diff > 0 ? "+" : "")}${diff}h`;
+	const name = `${clocks[15 <= minute && minute < 45 ? 1 : 0][hour % 12]}${states[count % 2]} ${diff == 0 ? "±" : (diff > 0 ? "+" : "")}${diff}h`;
 	await client.postAsync("account/update_profile", {name});
 })();
