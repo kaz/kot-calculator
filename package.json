@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "bluebird": "^3.5.4",
-    "puppeteer": "^1.14.0",
+    "cheerio": "^1.0.0-rc.3",
+    "fetch-cookie": "^0.7.2",
+    "node-fetch": "^2.3.0",
     "twitter": "^1.7.1"
   }
 }
