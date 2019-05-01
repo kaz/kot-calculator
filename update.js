@@ -41,8 +41,8 @@ const clocks = [
 		}
 	});
 
-	hour = parseInt(hour);
-	minute = parseInt(minute);
+	hour = parseInt(hour) || 0;
+	minute = parseInt(minute) || 0;
 
 	if(count % 2){
 		const now = new Date();
