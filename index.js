@@ -16,7 +16,7 @@ const clocks = [
 	["🕧", "🕜", "🕝", "🕞", "🕟", "🕠", "🕡", "🕢", "🕣", "🕤", "🕥", "🕦"],
 ];
 
-(async () => {
+exports.update = async (event, callback) => {
 	const login = await fetch(`${kotServer}/admin/?page_id=/login/login_form&action_id=1&login_id=${kot.id}&login_password=${kot.password}`);
 	const $login = cheerio.load(await login.text());
 	const [_, path] = $login("meta[http-equiv=refresh]").attr("content").split("URL=");
@@ -52,4 +52,4 @@ const clocks = [
 
 	const name = `${clocks[15 <= minute && minute < 45 ? 1 : 0][hour % 12]}${states[count % 2]} ${diff == 0 ? "±" : (diff > 0 ? "+" : "")}${diff}h`;
 	await client.postAsync("account/update_profile", {name});
-})();
+};
