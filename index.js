@@ -1,14 +1,12 @@
 "use strict";
 
+const util = require("util");
+const moment = require("moment-timezone");
 const fetch = require("fetch-cookie")(require("node-fetch"));
 const cheerio = require("cheerio");
 const Twitter = require("twitter");
-const Promise = require("bluebird");
 
-const kot = require("./auth/kot.json");
 const kotServer = "https://s3.kingtime.jp";
-
-const client = Promise.promisifyAll(new Twitter(require("./auth/twitter.json")));
 
 const states = ["🏠", "👨🏻‍💻"];
 const clocks = [
@@ -17,7 +15,9 @@ const clocks = [
 ];
 
 exports.update = async (event, callback) => {
-	const login = await fetch(`${kotServer}/admin/?page_id=/login/login_form&action_id=1&login_id=${kot.id}&login_password=${kot.password}`);
+	const {id, password} = require("./auth/kot.json");
+
+	const login = await fetch(`${kotServer}/admin/?page_id=/login/login_form&action_id=1&login_id=${id}&login_password=${password}`);
 	const $login = cheerio.load(await login.text());
 	const [_, path] = $login("meta[http-equiv=refresh]").attr("content").split("URL=");
 
@@ -45,11 +45,15 @@ exports.update = async (event, callback) => {
 	minute = parseInt(minute) || 0;
 
 	if(count % 2){
-		const now = new Date();
-		diff = diff - 9.0 + (now.getHours() - hour) + (now.getMinutes() - minute) / 60;
+		const now = moment().tz("Asia/Tokyo");
+		diff = diff - 9.0 + (now.hours() - hour) + (now.minutes() - minute) / 60;
 	}
 	diff = Math.round(diff * 100) / 100;
 
 	const name = `${clocks[15 <= minute && minute < 45 ? 1 : 0][hour % 12]}${states[count % 2]} ${diff == 0 ? "±" : (diff > 0 ? "+" : "")}${diff}h`;
-	await client.postAsync("account/update_profile", {name});
+
+	const client = new Twitter(require("./auth/twitter.json"));
+	await util.promisify(client.post).bind(client)("account/update_profile", {name});
+
+	callback(name);
 };

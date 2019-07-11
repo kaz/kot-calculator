@@ -1,3 +1,3 @@
 "use strict";
 
-require(".").update();
+require(".").update({}, name => console.log(name));

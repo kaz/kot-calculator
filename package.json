@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "bluebird": "^3.5.4",
     "cheerio": "^1.0.0-rc.3",
-    "fetch-cookie": "^0.7.2",
-    "node-fetch": "^2.3.0",
+    "fetch-cookie": "^0.7.3",
+    "moment-timezone": "^0.5.26",
+    "node-fetch": "^2.6.0",
     "twitter": "^1.7.1"
   }
 }
