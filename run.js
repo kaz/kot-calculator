@@ -1,3 +1,5 @@
 "use strict";
 
-require(".").update({}, name => console.log(name));
+(async () => {
+	console.log(await require(".").update());
+})();

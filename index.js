@@ -14,7 +14,7 @@ const clocks = [
 	["🕧", "🕜", "🕝", "🕞", "🕟", "🕠", "🕡", "🕢", "🕣", "🕤", "🕥", "🕦"],
 ];
 
-exports.update = async (event, callback) => {
+exports.update = async () => {
 	const {id, password} = require("./auth/kot.json");
 
 	const login = await fetch(`${kotServer}/admin/?page_id=/login/login_form&action_id=1&login_id=${id}&login_password=${password}`);
@@ -55,5 +55,5 @@ exports.update = async (event, callback) => {
 	const client = new Twitter(require("./auth/twitter.json"));
 	await util.promisify(client.post).bind(client)("account/update_profile", {name});
 
-	callback(name);
+	return name;
 };
