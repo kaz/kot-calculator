@@ -1,0 +1,22 @@
+resources:
+
+  - name: twkot-func
+    type: cloudfunctions.v1beta2.function
+    properties:
+      location: asia-northeast1
+      function: twkot-func
+      entryPoint: update
+      runtime: nodejs10
+      availableMemoryMb: 128
+      sourceRepository:
+        repositoryUrl: https://source.developers.google.com/p/<PROJECT_ID>/r/twitter-kot
+        sourcePath: /
+        branch: master
+      eventTrigger:
+        eventType: providers/cloud.pubsub/eventTypes/topic.publish
+        resource: $(ref.twkot-topic.name)
+
+  - name: twkot-topic
+    type: pubsub.v1.topic
+    properties:
+      topic: twkot-topic
