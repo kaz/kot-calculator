@@ -8,6 +8,10 @@ import (
 	"github.com/mrjones/oauth"
 )
 
+const (
+	AUTH_FILE = "../auth/twitter.json"
+)
+
 type (
 	TwitterAuth struct {
 		ConsumerKey       string `json:"consumer_key"`
@@ -18,7 +22,7 @@ type (
 )
 
 func main() {
-	data, err := ioutil.ReadFile("auth.json")
+	data, err := ioutil.ReadFile(AUTH_FILE)
 	if err != nil {
 		panic(err)
 	}
@@ -61,7 +65,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := ioutil.WriteFile("../auth/twitter.json", data, 0644); err != nil {
+	if err := ioutil.WriteFile(AUTH_FILE, data, 0644); err != nil {
 		panic(err)
 	}
 }
