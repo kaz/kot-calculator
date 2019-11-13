@@ -1,19 +1,13 @@
-.PHONY: default
-default:
-	@echo boo!
+.PHONY: plan
+plan: .terraform
+	terraform plan
 
-.PHONY: create
-create:
-	gcloud deployment-manager deployments create twkot --config deployment.yml
+.PHONY: apply
+apply: .terraform archive.zip
+	terraform apply
 
-.PHONY: update
-update:
-	gcloud deployment-manager deployments update twkot --config deployment.yml
+.terraform:
+	terraform init
 
-.PHONY: on
-on:
-	gcloud scheduler jobs create pubsub twkot-job --schedule "* * * * *" --topic twkot-topic --message-body null
-
-.PHONY: off
-off:
-	gcloud scheduler jobs delete twkot-job
+archive.zip: index.js package.json auth
+	zip -r $@ $^
