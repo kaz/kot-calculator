@@ -10,4 +10,8 @@ apply: .terraform archive.zip
 	terraform init
 
 archive.zip: index.js package.json auth
-	zip -r $@ $^
+	zip -r $@ $?
+
+.PHONY: clean
+clean:
+	rm -rf .terraform archive.zip

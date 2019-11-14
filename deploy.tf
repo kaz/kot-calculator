@@ -1,6 +1,6 @@
 locals {
-  name = "twitter-kot"
-  region = "asia-northeast1"
+  name    = "twitter-kot"
+  region  = "asia-northeast1"
   project = "<YOUR_PROJECT_ID>"
 }
 
@@ -13,7 +13,7 @@ terraform {
 
 provider "google" {
   project = "${local.project}"
-  region = "${local.region}"
+  region  = "${local.region}"
 }
 
 resource "google_pubsub_topic" "topic" {
@@ -21,22 +21,22 @@ resource "google_pubsub_topic" "topic" {
 }
 
 resource "google_cloud_scheduler_job" "job" {
-  name = "${local.name}"
+  name     = "${local.name}"
   schedule = "* * * * *"
 
   pubsub_target {
     topic_name = "${google_pubsub_topic.topic.id}"
-    data = "${base64encode(" ")}"
+    data       = "${base64encode(" ")}"
   }
 }
 
 resource "google_storage_bucket" "bucket" {
-  name = "functions-${local.project}"
+  name     = "${local.project}-${local.name}"
   location = "${local.region}"
 }
 
 resource "google_storage_bucket_object" "archive" {
-  name = "archive-${local.name}.zip"
+  name   = "archive.zip"
   bucket = "${google_storage_bucket.bucket.name}"
   source = "./archive.zip"
 }
@@ -44,15 +44,15 @@ resource "google_storage_bucket_object" "archive" {
 resource "google_cloudfunctions_function" "function" {
   name = "${local.name}"
 
-  runtime = "nodejs10"
+  runtime             = "nodejs10"
   available_memory_mb = 128
-  entry_point = "update"
+  entry_point         = "update"
 
   source_archive_bucket = "${google_storage_bucket.bucket.name}"
   source_archive_object = "${google_storage_bucket_object.archive.name}"
 
   event_trigger {
     event_type = "providers/cloud.pubsub/eventTypes/topic.publish"
-    resource = "${google_pubsub_topic.topic.id}"
+    resource   = "${google_pubsub_topic.topic.id}"
   }
 }
