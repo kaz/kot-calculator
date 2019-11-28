@@ -1,5 +1,5 @@
 .PHONY: plan
-plan: .terraform
+plan: .terraform archive.zip
 	terraform plan
 
 .PHONY: apply
