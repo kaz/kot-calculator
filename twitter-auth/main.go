@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	AUTH_FILE = "../auth/twitter.json"
+	AUTH_FILE = "../credentials/twitter.json"
 )
 
 type (

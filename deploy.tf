@@ -1,5 +1,5 @@
 locals {
-  name    = "twitter-kot"
+  name    = "kot-calculator"
   region  = "asia-northeast1"
   project = "<YOUR_PROJECT_ID>"
 }
@@ -7,7 +7,7 @@ locals {
 terraform {
   backend "gcs" {
     bucket = "<YOUR_BUCKET_NAME>"
-    prefix = "twitter-kot"
+    prefix = "kot-calculator"
   }
 }
 

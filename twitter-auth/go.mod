@@ -1,5 +1,5 @@
-module bitbucket.org/sekai/twitter-kot
+module github.com/kaz/kot-calculator/twitter-auth
 
-go 1.12
+go 1.13
 
-require github.com/mrjones/oauth v0.0.0-20180629183705-f4e24b6d100c
+require github.com/mrjones/oauth v0.0.0-20190623134757-126b35219450
