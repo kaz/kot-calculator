@@ -9,7 +9,7 @@ apply: .terraform archive.zip
 .terraform:
 	terraform init
 
-archive.zip: index.js package.json auth
+archive.zip: index.js package.json credentials lib
 	zip -r $@ $?
 
 .PHONY: clean

@@ -1,4 +1,7 @@
 node_modules
-auth
+
+credentials/*
+!credentials/.keep
+
 archive.zip
 .terraform
