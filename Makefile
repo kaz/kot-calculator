@@ -7,7 +7,7 @@ apply: .terraform archive.zip
 	terraform apply
 
 .terraform:
-	terraform init
+	terraform init -backend-config="bucket=$(BUCKET)"
 
 archive.zip: index.js package.json credentials lib
 	zip -r $@ $?
@@ -15,3 +15,12 @@ archive.zip: index.js package.json credentials lib
 .PHONY: clean
 clean:
 	rm -rf .terraform archive.zip
+
+.PHONY: encrypt
+encrypt:
+	gpg --default-recipient-self --encrypt env.mk
+
+env.mk:
+	gpg --output $@ --decrypt $@.gpg
+
+include env.mk

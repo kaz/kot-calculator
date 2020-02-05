@@ -5,3 +5,5 @@ credentials/*
 
 archive.zip
 .terraform
+
+env.mk

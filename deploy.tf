@@ -1,18 +1,18 @@
+variable "project" {}
+
 locals {
-  name    = "kot-calculator"
-  region  = "asia-northeast1"
-  project = "<YOUR_PROJECT_ID>"
+  name   = "kot-calculator"
+  region = "asia-northeast1"
 }
 
 terraform {
   backend "gcs" {
-    bucket = "<YOUR_BUCKET_NAME>"
     prefix = "kot-calculator"
   }
 }
 
 provider "google" {
-  project = local.project
+  project = var.project
   region  = local.region
 }
 
@@ -31,7 +31,7 @@ resource "google_cloud_scheduler_job" "job" {
 }
 
 resource "google_storage_bucket" "bucket" {
-  name     = "${local.project}-${local.name}"
+  name     = "${var.project}-${local.name}"
   location = local.region
 }
 
